@@ -8,6 +8,7 @@ using Tensorflow;
 using SciSharp.Models;
 using SciSharp.Models.TimeSeries;
 using PandasNet;
+using System.Net.WebSockets;
 
 namespace TensorFlowNET.Examples;
 
@@ -123,10 +124,12 @@ public class WeatherPrediction : SciSharpExample, IExample
         // Calculate the wind x and y components.
         //Column nc1 = new Column();
         //nc1.Name = "Wx";
-        //df.columns.Add(nc1);
+        //df.columns.Add(nc1);        
+        wv.SetIndex(df.index);
         df["Wx"] = wv * pd.cos(wd_rad);
         df["Wy"] = wv * pd.sin(wd_rad);
 
+        max_wv.SetIndex(df.index);
         // Calculate the max wind x and y components.
         df["max Wx"] = max_wv * pd.cos(wd_rad);
         df["max Wy"] = max_wv * pd.sin(wd_rad);
