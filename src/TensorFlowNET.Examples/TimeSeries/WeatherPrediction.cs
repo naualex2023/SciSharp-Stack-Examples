@@ -85,33 +85,45 @@ public class WeatherPrediction : SciSharpExample, IExample
         print(df.head());
 
         // plot featuers
-        /*var plot_cols = new string[] { "T (degC)", "p (mbar)", "rho (g/m**3)" };
-        var plot_features = df[plot_cols];
-        plot_features.index = date_time_string;
-        plot_features.plot();*/
+        /* var plot_cols = new string[] { "T (degC)", "p (mbar)", "rho (g/m**3)" };
+         var plot_features = df[plot_cols];
+         plot_features.index = date_time_string;
+         plot_features.plot();*/
 
-        print(df.describe().transpose());
+        //print(df.describe().transpose());
 
         // Wind velocity
-        var wv = df["wv (m/s)"];
+        df["wv (m/s)"] = df["wv (m/s)"].map<string, float>((i) => Convert.ToSingle(i.Replace(".", ",")));
+        var wv = df["wv (m/s)"];        
+        //wv = wv.map<string, float>((i) => Convert.ToSingle(i.Replace(".",",")));
         var bad_wv = wv == -9999.0f;
         wv[bad_wv] = 0.0f;
 
+        df["max. wv (m/s)"] = df["max. wv (m/s)"].map<string, float>((i) => Convert.ToSingle(i.Replace(".", ",")));
         var max_wv = df["max. wv (m/s)"];
+        
         var bad_max_wv = max_wv == -9999.0f;
         max_wv[bad_max_wv] = 0.0f;
 
         // The above inplace edits are reflected in the DataFrame
-        print(df["wv (m/s)"].min());
+        print(wv.min());
 
         // convert the wind direction and velocity columns to a wind vector
         wv = df.pop("wv (m/s)");
         max_wv = df.pop("max. wv (m/s)");
 
+        df["wd (deg)"] = df["wd (deg)"].map<string, float>((i) => Convert.ToSingle(i.Replace(".", ",")));
+        /*df["Wx"] = df["Wx"].map<string, float>((i) => Convert.ToSingle(i.Replace(".", ",")));
+        df["Wy"] = df["Wy"].map<string, float>((i) => Convert.ToSingle(i.Replace(".", ",")));
+        df["max Wx"] = df["max Wx"].map<string, float>((i) => Convert.ToSingle(i.Replace(".", ",")));
+        df["max Wy"] = df["max Wy"].map<string, float>((i) => Convert.ToSingle(i.Replace(".", ",")));*/
         // Convert to radians.
         var wd_rad = df.pop("wd (deg)") * pd.pi / 180;
 
         // Calculate the wind x and y components.
+        //Column nc1 = new Column();
+        //nc1.Name = "Wx";
+        //df.columns.Add(nc1);
         df["Wx"] = wv * pd.cos(wd_rad);
         df["Wy"] = wv * pd.sin(wd_rad);
 

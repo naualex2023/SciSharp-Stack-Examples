@@ -79,7 +79,8 @@ public class FuelEfficiencyPrediction : SciSharpExample, IExample
         // var df = train_dataset.describe().transpose()["mean", "std"];
 
         var normalizer = tf.keras.layers.Normalization(axis: -1);
-        normalizer.adapt(train_features);
+        //var normalizer = tf.keras.layers.Normalization(axis: null);
+        //normalizer.adapt(train_features);
 
         // Linear regression
         var horsepower = train_features["Horsepower"];

@@ -35,10 +35,11 @@ namespace TensorFlowNET.Examples
             var parsedArgs = ParseArgs(args);
 
             var examples = Assembly.GetEntryAssembly().GetTypes()
-                .Where(x => x.GetInterfaces().Contains(typeof(IExample)))
+                //.Where(x => x.GetInterfaces().Contains(typeof(IExample)))
                 //.Where(x => x.Name == nameof(MnistGAN))
                 //.Where(x => x.Name == nameof(ImageClassificationKeras))
-                //.Where(x => x.Name == nameof(WeatherPrediction))
+                .Where(x => x.Name == nameof(WeatherPrediction))
+                //.Where(x => x.Name == nameof(FuelEfficiencyPrediction))
                 .ToArray();
 
             Console.WriteLine(Environment.OSVersion, Color.Yellow);
